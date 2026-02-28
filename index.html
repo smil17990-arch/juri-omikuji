@@ -176,15 +176,37 @@ body{background:linear-gradient(160deg,#fce8f2 0%,#f4eafc 40%,#e8f0fc 100%);}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.35;}}
 
 /* ════ RESULT ════ */
+#result-img-wrap{
+  position:fixed;
+  top:0;left:0;right:0;
+  bottom:90px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+  gap:10px;
+  overflow:hidden;
+}
+#result-btn-area{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:90px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(252,232,242,0.97);
+  border-top:1px solid rgba(240,180,210,0.3);
+}
 .result-card-img{
+  max-width:100%;
+  max-height:100%;
   width:auto;
-  max-width:min(420px,97vw);
-  max-height:calc(100vh - 140px);
   height:auto;
-  border-radius:24px;
+  border-radius:20px;
   display:block;
   object-fit:contain;
-  box-shadow:0 8px 32px rgba(160,100,140,0.25),0 24px 64px rgba(160,100,140,0.18);
+  box-shadow:0 8px 32px rgba(160,100,140,0.25);
   animation:cardIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 @keyframes cardIn{from{opacity:0;transform:scale(0.85) translateY(24px);}to{opacity:1;transform:scale(1) translateY(0);}}
@@ -272,15 +294,15 @@ body{background:linear-gradient(160deg,#fce8f2 0%,#f4eafc 40%,#e8f0fc 100%);}
 </div>
 
 <!-- RESULT -->
-<div id="s-result" class="screen-scroll">
-  <div class="result-inner">
+<div id="s-result" class="screen-fixed">
+  <div id="result-img-wrap">
     <img class="result-card-img" id="result-img" src="" alt="おみくじ結果">
     <div class="kinun-box" id="kinun-box">
       <span class="kinun-icon">💰</span>
       <p class="kinun-text" id="kinun-text"></p>
     </div>
   </div>
-  <div class="btn-again-wrap" id="btn-again-wrap">
+  <div id="result-btn-area">
     <button class="btn-again" onclick="goTo('s-draw')">🎀 もう一度ひく</button>
   </div>
 </div>
@@ -314,13 +336,8 @@ function goTo(id) {
   const flash = document.getElementById('flash');
   flash.classList.add('on');
   setTimeout(() => {
-    document.querySelectorAll('.screen-fixed,.screen-scroll').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen-fixed').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    if(id === 's-result'){
-      document.getElementById('btn-again-wrap').classList.add('active');
-    } else {
-      document.getElementById('btn-again-wrap').classList.remove('active');
-    }
     window.scrollTo(0, 0);
     flash.classList.remove('on');
   }, 170);
