@@ -30,12 +30,23 @@ body{background:linear-gradient(160deg,#fce8f2 0%,#f4eafc 40%,#e8f0fc 100%);}
   flex-direction:column;
   align-items:center;
   background:linear-gradient(160deg,#fce8f2 0%,#f0e4fc 40%,#e4f0fc 100%);
-  padding:clamp(20px,5vw,40px) 16px clamp(40px,10vw,64px);
-  gap:20px;
+  padding:16px 16px 100px;
+  gap:16px;
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
 }
 .screen-scroll.active{display:flex;}
+.btn-again-wrap{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  padding:12px 16px 24px;
+  background:linear-gradient(to top,rgba(252,232,242,1) 60%,transparent);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+}
+.btn-again-wrap.active{display:flex;}
 
 /* ════ TITLE ════ */
 #s-title{
@@ -254,6 +265,8 @@ body{background:linear-gradient(160deg,#fce8f2 0%,#f4eafc 40%,#e8f0fc 100%);}
     <span class="kinun-icon">💰</span>
     <p class="kinun-text" id="kinun-text"></p>
   </div>
+</div>
+<div class="btn-again-wrap" id="btn-again-wrap">
   <button class="btn-again" onclick="goTo('s-draw')">🎀 もう一度ひく</button>
 </div>
 
@@ -287,7 +300,9 @@ function goTo(id) {
   flash.classList.add('on');
   setTimeout(() => {
     document.querySelectorAll('.screen-fixed,.screen-scroll').forEach(s => s.classList.remove('active'));
+    document.getElementById('btn-again-wrap').classList.remove('active');
     document.getElementById(id).classList.add('active');
+    if(id === 's-result') document.getElementById('btn-again-wrap').classList.add('active');
     window.scrollTo(0, 0);
     flash.classList.remove('on');
   }, 170);
