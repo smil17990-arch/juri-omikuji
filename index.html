@@ -360,9 +360,23 @@ function selectCat(btn, cat) {
 
 function drawOmikuji() {
   const box = document.getElementById('omikuji-box');
+
+  // ── 前の画像を即座に非表示 ──
+  const resultImg = document.getElementById('result-img');
+  resultImg.style.opacity = '0';
+
+  // ── プルプル溜め演出 ──
   box.style.animation = 'none';
   box.style.transform = 'scale(0.86)';
-  setTimeout(() => { box.style.transform = ''; box.style.animation = ''; }, 220);
+  setTimeout(() => {
+    box.style.transition = 'transform 0.08s ease-in-out';
+    box.style.transform = 'scale(1.08) rotate(-4deg)';
+  }, 120);
+  setTimeout(() => { box.style.transform = 'scale(1.04) rotate(4deg)'; }, 200);
+  setTimeout(() => { box.style.transform = 'scale(1.1) rotate(-5deg)'; }, 290);
+  setTimeout(() => { box.style.transform = 'scale(1.06) rotate(5deg)'; }, 370);
+  setTimeout(() => { box.style.transform = 'scale(1.12) rotate(-3deg)'; }, 450);
+  setTimeout(() => { box.style.transform = 'scale(1.0) rotate(0deg)'; box.style.transition = ''; box.style.animation = ''; }, 530);
 
   // ── カテゴリーに対応した画像リストを取得 ──
   const catImages = IMAGES[selectedCat];
@@ -371,7 +385,8 @@ function drawOmikuji() {
   while (catImages.length > 1 && selectedCat + idx === lastKey);
   lastKey = selectedCat + idx;
 
-  document.getElementById('result-img').src = catImages[idx];
+  resultImg.src = catImages[idx];
+  resultImg.onload = () => { resultImg.style.opacity = ''; };
 
   // ── 金運のみ追加メッセージを表示 ──
   const kinunBox = document.getElementById('kinun-box');
@@ -383,7 +398,8 @@ function drawOmikuji() {
     kinunBox.classList.remove('show');
   }
 
-  setTimeout(() => { goTo('s-result'); launchConfetti(); }, 280);
+  // 溜めが終わってから画面遷移
+  setTimeout(() => { goTo('s-result'); launchConfetti(); }, 620);
 }
 
 function launchConfetti() {
