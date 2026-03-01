@@ -305,20 +305,32 @@ body{background:linear-gradient(160deg,#fce8f2 0%,#f4eafc 40%,#e8f0fc 100%);}
 </div>
 
 <script>
-// ══ 画像リスト ══
-// 画像を増やすときはここに追加するだけ！
-// ファイル名は images/ フォルダに入れたものと合わせてください
-const IMAGES = [
-  'images/img01.png',  // みんなから大吉
-  'images/img02.png',  // 金運大吉
-  'images/img03.png',  // ボーイスカウト吉
-  'images/img04.png',  // 星空中吉
-  'images/img05.png',  // 折り紙吉
-  'images/img06.png',  // 虹小吉
-  // ↓ 画像が増えたらここに追加
-  // 'images/img07.png',
-  // 'images/img08.png',
-];
+// ══ カテゴリー別画像リスト ══
+// 画像を追加するときはここに追加するだけ！
+const IMAGES = {
+  general: [
+    'images/img01.png',  // みんなから大吉
+    'images/img04.png',  // 星空中吉
+    'images/img06.png',  // 虹小吉（generalにも）
+    'images/img03.png',  // ボーイスカウト吉（generalにも）
+  ],
+  study: [
+    'images/img03.png',  // ボーイスカウト吉
+    'images/img06.png',  // 虹小吉（studyにも）
+    // お勉強用画像を追加するときはここに↓
+    // 'images/img07.png',
+  ],
+  origami: [
+    'images/img05.png',  // 折り紙吉
+    // 折り紙用画像を追加するときはここに↓
+    // 'images/img08.png',
+  ],
+  kinun: [
+    'images/img02.png',  // 金運大吉
+    // 金運用画像を追加するときはここに↓
+    // 'images/img09.png',
+  ],
+};
 
 const KINUN_MSGS = [
   'パパに<strong>「今日の金運は大吉だよ！🤑」</strong>って<br>こっそり教えてみよう🤫<br>なにかいいことがあるかも…✨',
@@ -327,7 +339,7 @@ const KINUN_MSGS = [
 ];
 
 let selectedCat = 'general';
-let lastIdx = -1;
+let lastKey = '';  // "カテゴリー_インデックス" で重複防止
 
 function goTo(id) {
   const flash = document.getElementById('flash');
@@ -352,12 +364,16 @@ function drawOmikuji() {
   box.style.transform = 'scale(0.86)';
   setTimeout(() => { box.style.transform = ''; box.style.animation = ''; }, 220);
 
+  // ── カテゴリーに対応した画像リストを取得 ──
+  const catImages = IMAGES[selectedCat];
   let idx;
-  do { idx = Math.floor(Math.random() * IMAGES.length); }
-  while (IMAGES.length > 1 && idx === lastIdx);
-  lastIdx = idx;
-  document.getElementById('result-img').src = IMAGES[idx];
+  do { idx = Math.floor(Math.random() * catImages.length); }
+  while (catImages.length > 1 && selectedCat + idx === lastKey);
+  lastKey = selectedCat + idx;
 
+  document.getElementById('result-img').src = catImages[idx];
+
+  // ── 金運のみ追加メッセージを表示 ──
   const kinunBox = document.getElementById('kinun-box');
   if (selectedCat === 'kinun') {
     kinunBox.classList.add('show');
